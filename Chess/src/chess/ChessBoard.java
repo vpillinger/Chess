@@ -34,7 +34,14 @@ public class ChessBoard<E extends ChessPiece> extends Board<E> {
 	 * @return null if no piece is there, 
 	 * an arrayList of possible move Locations if a piece is there
 	 */
-	public ArrayList<Location> getMoveLocationsforLoc(Location loc){
+	public ArrayList<Location> getMoveLocationsForLocation(Location loc){
+		return null;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public ChessPiece getChessPieceAtLocation(){
 		return null;
 	}
 }

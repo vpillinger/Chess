@@ -3,7 +3,6 @@ package chess;
 import java.awt.Color;
 
 public class Player {
-	
 	private Color color;
 	/**
 	 * The ChessPlayer

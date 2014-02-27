@@ -20,6 +20,14 @@ public class Board<E extends Piece> extends BoundedGrid<E>{
 		return false;
 	}	
 	/**
+	 * 
+	 * @param loc
+	 * @return
+	 */
+	public Piece getPieceatLoc(Location loc){
+		return null;
+	}
+	/**
 	 * Use to get the color of a piece at the target location
 	 * @param loc the location to find the piece at
 	 * @return null if no piece, the color of the piece otherwise
