@@ -1,4 +1,4 @@
-package chess;
+package Chess;
 
 import info.gridworld.grid.BoundedGrid;
 import info.gridworld.grid.Location;

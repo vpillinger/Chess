@@ -1,16 +1,10 @@
-package chess;
+package Chess;
 
 import info.gridworld.grid.Location;
 
 import java.util.ArrayList;
 
 public class King extends ChessPiece{
-	private boolean hasMoved;
-	@Override
-	public boolean hasMoved() {
-		return hasMoved;
-	}
-
 	@Override
 	public ArrayList<Location> getValidMoveLocations() {
 		// TODO Auto-generated method stub
@@ -28,8 +22,8 @@ public class King extends ChessPiece{
 	 * @return The possible locations that this King will end up in
 	 * after castling
 	 */
-	public ArrayList<Location> getValidCastleLocations(){
-		//see rules of chess
+	private ArrayList<Location> getValidCastleLocations(){
+		//see rules of chess (make sure that king is not castling through check)
 		//both king and rook to perform castle with 
 		//have had to not move
 		return null;
