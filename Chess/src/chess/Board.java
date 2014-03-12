@@ -1,4 +1,4 @@
-package chess;
+package Chess;
 
 import info.gridworld.grid.BoundedGrid;
 import info.gridworld.grid.Location;
@@ -19,6 +19,14 @@ public class Board<E extends Piece> extends BoundedGrid<E>{
 	public boolean isPieceatLoc(Location loc){
 		return false;
 	}	
+	/**
+	 * 
+	 * @param loc
+	 * @return
+	 */
+	public Piece getPieceatLoc(Location loc){
+		return null;
+	}
 	/**
 	 * Use to get the color of a piece at the target location
 	 * @param loc the location to find the piece at

@@ -37,4 +37,11 @@ public class ChessBoard<E extends ChessPiece> extends Board<E> {
 	public ArrayList<Location> getMoveLocationsforLoc(Location loc){
 		return null;
 	}
+	/**
+	 * 
+	 * @return
+	 */
+	public ChessPiece getChessPieceAtLocation(){
+		return null;
+	}
 }

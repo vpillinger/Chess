@@ -1,9 +1,8 @@
-package chess;
+package Chess;
 
 import java.awt.Color;
 
 public class Player {
-	
 	private Color color;
 	/**
 	 * The ChessPlayer

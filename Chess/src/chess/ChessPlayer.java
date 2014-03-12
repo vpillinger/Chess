@@ -1,9 +1,10 @@
-package chess;
+package Chess;
 
 import java.awt.Color;
 
 public class ChessPlayer extends Player{
 	private ChessClock clock;
+	private King king;
 	
 	public ChessPlayer(Color color){
 		super(color);
@@ -27,7 +28,7 @@ public class ChessPlayer extends Player{
 	/**
 	 * Returns the players status at the start of a turn
 	 * 
-	 * @return CHECK,CHECKAME,or NOSTATUS
+	 * @return CHECK,CHECKMATE,or NOSTATUS
 	 */
 	public TURNSTATUS startTurn() {
 		return null;
