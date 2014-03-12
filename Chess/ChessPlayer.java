@@ -6,7 +6,7 @@ public class ChessPlayer extends Player{
 	private ChessClock clock;
 	private King king;
 	
-	public ChessPlayer(Color color){
+	public ChessPlayer(Color color, King king){
 		super(color);
 	}
 	/**

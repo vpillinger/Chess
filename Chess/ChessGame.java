@@ -60,4 +60,25 @@ public class ChessGame {
 	public TURNSTATUS startActivePlayerTurn(){
 		return null;
 	}
+	/**
+	 * Stops the Active players clock
+	 * @return true if clock was stopped, false otherwise
+	 */
+	public boolean stopActivePlayerClock(){
+		return false;
+	}
+	/**
+	 * Starts the Active players clock
+	 * @return true if clock was started, false otherwise
+	 */
+	public boolean startActivePlayerClock(){
+		return false;
+	}
+	/**
+	 * This method returns the time left in milliseconds on the ChessClock of the Active Player
+	 * @return The time remaining in milliseconds
+	 */
+	public long getActivePlayerTimeLeft(){
+		return 0;
+	}
 }
