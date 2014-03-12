@@ -14,29 +14,37 @@ public class Bishop extends ChessPiece {
 	public ArrayList<Location> getValidMoveLocations() {
 		//moves diagonally
 		ArrayList<Location> validLocs = new ArrayList<Location>();
-		//while still in the board go up-left
+		//check in 
+		validLocs.addAll(checkValidLocInDirection(Location.NORTHEAST));
+		validLocs.addAll(checkValidLocInDirection(Location.SOUTHEAST));
+		validLocs.addAll(checkValidLocInDirection(Location.SOUTHWEST));
+		validLocs.addAll(checkValidLocInDirection(Location.NORTHWEST));
+		return validLocs;
+	}
+	
+	private ArrayList<Location> checkValidLocInDirection(int direction){
+		ArrayList<Location> validLocs = new ArrayList<Location>();
 		ChessBoard<ChessPiece> myBoard = super.getChessBoard();
 		Location myLoc = super.getLocation();
-		Location nextLoc = myLoc.getAdjacentLocation(Location.NORTHWEST);
-		//while still on a valid location on a board
-		//loop for just northwest here
+		Location nextLoc = myLoc.getAdjacentLocation(direction);
+		//while still on a valid location on a board loop in the given direction
 		while(myBoard != null && myBoard.isValid(nextLoc)){
 			ChessPiece pieceAtLoc = (ChessPiece) myBoard.get(nextLoc);
-			//if no piece can move there
+			//if no piece, this can move there
 			if(pieceAtLoc == null){
 				validLocs.add(nextLoc);
 			// if piece stop
 			}else{
-				if((pieceAtLoc.getColor()).equals(super.getColor())){
-					//top loop break();
 				//if enemy piece that is a valid location
-				}else{
+				if(!(pieceAtLoc.getColor()).equals(super.getColor())){
 					validLocs.add(nextLoc);
-					//stop loop break();
 				}
+				//this cannot move further in the given direction
+				break;
 			}
+			//move on to next location in the given direction
+			nextLoc = nextLoc.getAdjacentLocation(direction);
 		}
-		//incomplete
-		return null;
+		return validLocs;
 	}
 }
