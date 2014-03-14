@@ -6,10 +6,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class Pawn extends ChessPiece {
-	public Pawn(ChessBoard<ChessPiece> board, Color color){
+	public Pawn(ChessBoard<ChessPiece> board, Color color, Location loc){
 		super.setColor(color);
 		super.setHasMoved(false);
-		super.setChessBoard(board);
+		super.putSelfInChessBoard(board,loc);
 	}
 	@Override
 	public ArrayList<Location> getValidMoveLocations() {

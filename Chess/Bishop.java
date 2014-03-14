@@ -5,10 +5,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class Bishop extends ChessPiece {
-	public Bishop(ChessBoard<ChessPiece> board, Color color){
+	public Bishop(ChessBoard<ChessPiece> board, Color color, Location loc){
 		super.setColor(color);
 		super.setHasMoved(false);
-		super.setChessBoard(board);
+		super.putSelfInChessBoard(board,loc);
 	}
 	
 	public ArrayList<Location> getValidMoveLocations() {

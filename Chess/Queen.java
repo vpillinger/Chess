@@ -5,8 +5,9 @@ import info.gridworld.grid.Location;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class Rook extends ChessPiece {
-	public Rook(ChessBoard<ChessPiece> board, Color color, Location loc){
+public class Queen extends ChessPiece {
+
+	public Queen(ChessBoard<ChessPiece> board, Color color, Location loc){
 		super.setColor(color);
 		super.setHasMoved(false);
 		super.putSelfInChessBoard(board,loc);
