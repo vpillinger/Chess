@@ -2,19 +2,25 @@ package Chess;
 
 import java.awt.Color;
 
-public class ChessPlayer extends Player{
+public class ChessPlayer{
 	private ChessClock clock;
 	private King king;
+	private Color color;
 	
-	public ChessPlayer(Color color, King king){
-		super(color);
+	public ChessPlayer(Color color, King king, long clockTime){
+		if(king.getColor() != color){
+			throw new RuntimeException("The king is not the same color as the player");
+		}
+		this.color = color;
+		this.king = king;
+		this.clock = new ChessClock(clockTime);
 	}
 	/**
 	 * 
 	 * @return true if is in check, false if not
 	 */
 	public boolean isInCheck() {
-		return false;
+		return king.isInCheck();
 	}
 
 	/**
@@ -43,12 +49,12 @@ public class ChessPlayer extends Player{
 	}
 
 	/**
-	 * Returns the time left on a players clock in seconds
+	 * Returns the time left on a players clock in milliSeconds
 	 * 
 	 * @return long representing seconds
 	 */
-	public long getTimeLeftInSeconds() {
-		return 0;
+	public long getTimeLeftInMilliSeconds() {
+		return clock.getTimeLeft();
 	}
 
 	/**
@@ -57,6 +63,20 @@ public class ChessPlayer extends Player{
 	 */
 	public ChessClock getChessClock() {
 		return clock;
+	}	
+	/**
+	 * 
+	 * @return
+	 */
+	public Color getColor() {
+		return color;
+	}
+	/**
+	 * 
+	 * @param myColor
+	 */
+	public void setColor(Color myColor) {
+		this.color = myColor;
 	}
 
 }
