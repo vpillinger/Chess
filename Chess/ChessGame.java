@@ -162,4 +162,7 @@ public class ChessGame {
 	public long getActivePlayerTimeLeft() {
 		return activePlayer.getTimeLeftInMilliSeconds();
 	}
+	public ChessBoard<ChessPiece> getChessBoard(){
+		return gameBoard;
+	}
 }
