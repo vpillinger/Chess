@@ -14,7 +14,7 @@ public class Rook extends ChessPiece {
 	@Override
 	public ArrayList<Location> getValidMoveLocations() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<Location>();
 	}
 
 }

@@ -50,8 +50,10 @@ public class King extends ChessPiece {
 			if (curPiece.getColor() != super.getColor()) {
 				// if any other piece can move at potentialLoc then king would
 				// be in check
-				if (curPiece.getValidMoveLocations().contains(potentialLoc)) {
-					return true;
+				if(!(curPiece instanceof King)){//try to prevent infinite loop
+					if (curPiece.getValidMoveLocations().contains(potentialLoc)) {
+						return true;
+					}
 				}
 			}
 		}
@@ -76,8 +78,14 @@ public class King extends ChessPiece {
 		}
 		
 		// check left then right
-		castleLocs.add((Location) checkCastleDirection(Location.WEST).get(0));
-		castleLocs.add((Location) checkCastleDirection(Location.EAST).get(0));
+		ArrayList<Object> locToAdd = checkCastleDirection(Location.WEST);
+		if(locToAdd.size() == 2){
+			castleLocs.add((Location)locToAdd.get(0));
+		}
+		locToAdd = checkCastleDirection(Location.EAST);
+		if(locToAdd.size() == 2){
+			castleLocs.add((Location)locToAdd.get(0));
+		}
 		return castleLocs;
 	}
 	//needs checking
@@ -125,7 +133,7 @@ public class King extends ChessPiece {
 		int castleDir = super.getLocation().getDirectionToward(loc);
 		ArrayList<Object> locAndRook = checkCastleDirection(castleDir);
 		
-		if(loc != locAndRook.get(0)){
+		if(!loc.equals((Location)locAndRook.get(0))){
 			return false;
 		}
 		if(castleDir<180){

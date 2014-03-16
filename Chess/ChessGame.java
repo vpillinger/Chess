@@ -17,7 +17,7 @@ public class ChessGame {
 	 */
 	public ChessGame(long playerClockTime) {
 		gameBoard = ChessBoard.makeFullChessBoard();
-		ArrayList<King> kings = new ArrayList<King>();
+		ArrayList<King> kings = gameBoard.getKingsOnChessBoard();
 		ChessPlayer player1 = new ChessPlayer(kings.get(0).getColor(),
 				kings.get(0), playerClockTime);
 		ChessPlayer player2 = new ChessPlayer(kings.get(1).getColor(),

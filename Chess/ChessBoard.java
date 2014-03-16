@@ -32,11 +32,11 @@ public class ChessBoard<E extends ChessPiece> extends BoundedGrid<E> {
 		return board;
 	}
 
-	private static void placeLowerSide(ChessBoard<ChessPiece> self,
+	private static void placeUpperSide(ChessBoard<ChessPiece> self,
 			Color sideColor) {
 		// set up pawns
 		for (int i = 0; i < 8; i++) {
-			new Pawn(self, sideColor, new Location(0, i));
+			new Pawn(self, sideColor, new Location(1, i));
 		}
 		// set up Rooks
 		new Rook(self, sideColor, new Location(0, 0));
@@ -53,7 +53,7 @@ public class ChessBoard<E extends ChessPiece> extends BoundedGrid<E> {
 		new King(self, sideColor, new Location(0, 4));
 	}
 
-	private static void placeUpperSide(ChessBoard<ChessPiece> self,
+	private static void placeLowerSide(ChessBoard<ChessPiece> self,
 			Color sideColor) {
 		// set up pawns
 		for (int i = 0; i < 8; i++) {
@@ -103,7 +103,7 @@ public class ChessBoard<E extends ChessPiece> extends BoundedGrid<E> {
 	 * @return true if there is a piece, false if there is not
 	 */
 	public boolean isChessPieceAtLoc(Location loc) {
-		return (super.get(loc) == null);
+		return (super.get(loc) != null);
 	}
 
 	/**
