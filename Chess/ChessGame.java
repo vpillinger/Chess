@@ -13,6 +13,7 @@ public class ChessGame {
 
 	/**
 	 * Creates a chess game with filled board and with players
+	 * PostCondition: (1) The game is ready to play
 	 */
 	public ChessGame(long playerClockTime) {
 		gameBoard = ChessBoard.makeFullChessBoard();
