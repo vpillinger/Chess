@@ -21,14 +21,14 @@ public class ChessGame {
 	 * @return
 	 */
 	public ArrayList<Location> getMoveLocationsAtLocation(Location loc){
-		return null;
+		return gameBoard.getMoveLocationsForLocation(loc);
 	}
 	/**
 	 * 
 	 * @return
 	 */
-	public Color getPieceColorAtLocation(){
-		return null;
+	public Color getPieceColorAtLocation(Location loc){
+		return gameBoard.getChessPieceColorAtLoc(loc);
 	}
 	 
 	public Color getActivePlayerColor() {
@@ -51,6 +51,11 @@ public class ChessGame {
 	 * @return true if players turn was ended, false otherwise
 	 */
 	public boolean endActivePlayerTurn() throws InCheckException{
+		if(activePlayer.endTurn()){
+			ChessPlayer t = activePlayer;
+			activePlayer = inactivePlayer;
+			inactivePlayer = t;
+		}
 		return false;
 	}
 	/**
@@ -58,27 +63,27 @@ public class ChessGame {
 	 * @return returns the TURNSTATUS of the player whose turn starts
 	 */
 	public TURNSTATUS startActivePlayerTurn(){
-		return null;
+		return activePlayer.startTurn();
 	}
 	/**
 	 * Stops the Active players clock
 	 * @return true if clock was stopped, false otherwise
 	 */
-	public boolean stopActivePlayerClock(){
-		return false;
+	public void stopActivePlayerClock(){
+		activePlayer.stopClock();
 	}
 	/**
 	 * Starts the Active players clock
 	 * @return true if clock was started, false otherwise
 	 */
-	public boolean startActivePlayerClock(){
-		return false;
+	public void startActivePlayerClock(){
+		activePlayer.startClock();
 	}
 	/**
 	 * This method returns the time left in milliseconds on the ChessClock of the Active Player
 	 * @return The time remaining in milliseconds
 	 */
 	public long getActivePlayerTimeLeft(){
-		return 0;
+		return activePlayer.getTimeLeftInMilliSeconds();
 	}
 }

@@ -76,12 +76,13 @@ public class King extends ChessPiece {
 		}
 		
 		// check left then right
-		castleLocs.add(checkCastleDirection(Location.WEST));
-		castleLocs.add(checkCastleDirection(Location.EAST));
+		castleLocs.add((Location) checkCastleDirection(Location.WEST).get(0));
+		castleLocs.add((Location) checkCastleDirection(Location.EAST).get(0));
 		return castleLocs;
 	}
 	//needs checking
-	private Location checkCastleDirection(int direction) {
+	private ArrayList<Object> checkCastleDirection(int direction) {
+		ArrayList<Object> returnPair = new ArrayList<Object>(2);
 		ChessBoard<ChessPiece> br = super.getChessBoard();
 		Location curLoc = super.getLocation().getAdjacentLocation(direction);
 		// check that there is an empty path to a rook that has not moved
@@ -98,14 +99,17 @@ public class King extends ChessPiece {
 						Location kingFinalLocation = kingMoveThrough.getAdjacentLocation(direction);
 						//if not castling through or ending up in check
 						if(!wouldBeInCheck(kingMoveThrough) && !wouldBeInCheck(kingFinalLocation)){
-							return kingFinalLocation;
+							returnPair.add(kingFinalLocation);
+							returnPair.add(curPiece);
+							return returnPair;
 						}
 					}
 				}
 				break;//if there was a piece there either castling was possible or it isn't
 			}
+			curLoc = curLoc.getAdjacentLocation(direction);
 		}
-		return null;
+		return returnPair;
 	}
 
 	/**
@@ -118,7 +122,21 @@ public class King extends ChessPiece {
 		// make sure is loc is a valid castle location
 		// get the rook that is going to castle with the king
 		// move the king, then move the rook
-		return false;
+		int castleDir = super.getLocation().getDirectionToward(loc);
+		ArrayList<Object> locAndRook = checkCastleDirection(castleDir);
+		
+		if(loc != locAndRook.get(0)){
+			return false;
+		}
+		if(castleDir<180){
+			castleDir += 180;
+		}else{
+			castleDir -= 180;
+		}
+		((Rook)locAndRook.get(1)).doMove(loc.getAdjacentLocation(castleDir));
+		
+		super.doMove(loc);
+		return true;
 	}
 
 }

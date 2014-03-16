@@ -23,18 +23,43 @@ public abstract class ChessPiece{
 		return hasMoved;
 	}
 	/**
-	 * returns true and moves Chess Piece is the location 
-	 * given was a Valid Move Location.
-	 * @param loc the potential loc to move to
+	 * Moves this ChessPiece to a new location. If there is another ChessPiece at the
+	 * given location, it is removed. <br />
+	 * Precondition: (1) This ChessPiece is contained in a ChessBoard (2)
+	 * <code>newLocation</code> is valid in the ChessBoard of this ChessPiece
+	 * 
+	 * @param newLocation
+	 *            the new location
 	 * @return true if this Chess Piece moved, false if it did not
 	 */
-	public boolean MoveTo(Location loc){
+	public ChessPiece moveTo(Location loc){
 		if(getValidMoveLocations().contains(loc)){
-			moveTo(loc);
+			ChessPiece toReturn = doMove(loc);
 			hasMoved = true;
-			return true;
+			return toReturn;
 		}
-		return false;
+		return null;
+	}
+	protected ChessPiece doMove(Location newLocation) {
+		if (chessboard == null)
+			throw new IllegalStateException("This chesspiece is not in a chessboard.");
+		if (chessboard.get(location) != this)
+			throw new IllegalStateException(
+					"The chessboard contains a different chesspiece at location "
+							+ location + ".");
+		if (!chessboard.isValid(newLocation))
+			throw new IllegalArgumentException("Location " + newLocation
+					+ " is not valid.");
+
+		if (newLocation.equals(location))
+			return null;
+		chessboard.remove(location);
+		ChessPiece other = chessboard.get(newLocation);
+		if (other != null)
+			other.removeSelfFromChessBoard();
+		location = newLocation;
+		chessboard.put(location, this);
+		return other;
 	}
 	
 
@@ -117,36 +142,6 @@ public abstract class ChessPiece{
 		chessboard.remove(location);
 		chessboard = null;
 		location = null;
-	}
-
-	/**
-	 * Moves this ChessPiece to a new location. If there is another ChessPiece at the
-	 * given location, it is removed. <br />
-	 * Precondition: (1) This ChessPiece is contained in a ChessBoard (2)
-	 * <code>newLocation</code> is valid in the ChessBoard of this ChessPiece
-	 * 
-	 * @param newLocation
-	 *            the new location
-	 */
-	public void moveTo(Location newLocation) {
-		if (chessboard == null)
-			throw new IllegalStateException("This chesspiece is not in a chessboard.");
-		if (chessboard.get(location) != this)
-			throw new IllegalStateException(
-					"The chessboard contains a different chesspiece at location "
-							+ location + ".");
-		if (!chessboard.isValid(newLocation))
-			throw new IllegalArgumentException("Location " + newLocation
-					+ " is not valid.");
-
-		if (newLocation.equals(location))
-			return;
-		chessboard.remove(location);
-		ChessPiece other = chessboard.get(newLocation);
-		if (other != null)
-			other.removeSelfFromChessBoard();
-		location = newLocation;
-		chessboard.put(location, this);
 	}
 
 	/**
