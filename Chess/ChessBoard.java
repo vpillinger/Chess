@@ -128,4 +128,20 @@ public class ChessBoard<E extends ChessPiece> extends BoundedGrid<E> {
 		}
 		return null;
 	}
+	/**
+	 * Returns all of the kings on the board.
+	 * @return
+	 */
+	public ArrayList<King> getKingsOnChessBoard(){
+		//probably terrible way of doing this
+		ArrayList<Location> allPieces = super.getOccupiedLocations();
+		ArrayList<King> allKings = new ArrayList<King>();
+		for(Location curLoc: allPieces){
+			ChessPiece curPiece = getChessPieceAtLoc(curLoc);
+			if(curPiece instanceof King){
+				allKings.add( (King) curPiece);
+			}
+		}
+		return allKings;
+	}
 }

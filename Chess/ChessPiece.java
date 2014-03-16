@@ -27,18 +27,19 @@ public abstract class ChessPiece{
 	 * given location, it is removed. <br />
 	 * Precondition: (1) This ChessPiece is contained in a ChessBoard (2)
 	 * <code>newLocation</code> is valid in the ChessBoard of this ChessPiece
-	 * 
+	 * Postcondition: (1) If a piece was contained at loc, that piece was removed from the ChessBoard
 	 * @param newLocation
 	 *            the new location
 	 * @return true if this Chess Piece moved, false if it did not
+	 * @throws Exception if the location was not valid move location for the piece
 	 */
-	public ChessPiece moveTo(Location loc){
+	public ChessPiece moveTo(Location loc) throws IllegalMoveException{
 		if(getValidMoveLocations().contains(loc)){
 			ChessPiece toReturn = doMove(loc);
 			hasMoved = true;
 			return toReturn;
 		}
-		return null;
+		throw new IllegalMoveException("Not a valid move location");
 	}
 	protected ChessPiece doMove(Location newLocation) {
 		if (chessboard == null)

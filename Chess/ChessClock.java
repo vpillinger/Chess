@@ -5,7 +5,7 @@ public class ChessClock {
 	 * 
 	 * @param seconds the number of seconds on the clock
 	 */
-	public ChessClock(long seconds){
+	public ChessClock(long milliseconds){
 		
 	}
 	/**
