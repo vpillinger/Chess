@@ -73,4 +73,23 @@ public class Pawn extends ChessPiece {
 		return validLocs;
 	}
 
+	/**
+	 * @throws IllegalMoveException
+	 *             if this Pawn was not able to move to the loc specified
+	 * @throws PieceNeedsToBeReplacedException
+	 *             if this Pawn is at either edge of the board where it needs to
+	 *             be replaced
+	 */
+	@Override
+	public ChessPiece moveTo(Location loc) throws IllegalMoveException,
+			PieceNeedsToBeReplacedException {
+		ChessPiece potentialTakenPiece = super.moveTo(loc);
+		// if pawn needs to be replaced by a piece throw an IllegalMoveException
+		if (super.getLocation().getRow() == 7
+				|| super.getLocation().getRow() == 0) {
+			throw new PieceNeedsToBeReplacedException(
+					"Pawn needs to be replaced", potentialTakenPiece);
+		}
+		return potentialTakenPiece;
+	}
 }

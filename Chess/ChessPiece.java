@@ -33,7 +33,7 @@ public abstract class ChessPiece{
 	 * @return true if this Chess Piece moved, false if it did not
 	 * @throws Exception if the location was not valid move location for the piece
 	 */
-	public ChessPiece moveTo(Location loc) throws IllegalMoveException{
+	public ChessPiece moveTo(Location loc) throws IllegalMoveException, PieceNeedsToBeReplacedException{
 		if(getValidMoveLocations().contains(loc)){
 			ChessPiece toReturn = doMove(loc);
 			hasMoved = true;
