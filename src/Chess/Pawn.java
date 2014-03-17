@@ -26,8 +26,15 @@ public class Pawn extends ChessPiece {
 		ArrayList<Location> validLocs = new ArrayList<Location>();
 		// get possible move locations
 		validLocs.addAll(checkValidLocInDirection(direction));
-
 		// get capture locations
+		validLocs.addAll(getCaptureDirections());
+		return validLocs;
+
+	}
+
+	public ArrayList<Location> getCaptureDirections() {
+		ArrayList<Location> validLocs = new ArrayList<Location>(2);
+		
 		int[] captureDirections = new int[2];
 		captureDirections[0] = direction + 45;
 		captureDirections[1] = direction + 315;
@@ -45,7 +52,6 @@ public class Pawn extends ChessPiece {
 
 		}
 		return validLocs;
-
 	}
 
 	private ArrayList<Location> checkValidLocInDirection(int direction) {

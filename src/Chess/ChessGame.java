@@ -52,6 +52,10 @@ public class ChessGame {
 		return activePlayer.getColor();
 	}
 
+	public Color getInactivePlayerColor() {
+		return inactivePlayer.getColor();
+	}
+
 	/**
 	 * Move a piece from one location to another location PostCondition: (1) the
 	 * active player is now the inactive player and vice versa
@@ -63,51 +67,62 @@ public class ChessGame {
 	 * @return return true if a piece was moved and turn ended successfully
 	 */
 	public boolean moveAndEndActivePlayerTurn(Location from, Location to)
-			throws IllegalMoveException, PieceNeedsToBeReplacedException{
-		/*this is pretty terrible, could use some cleanup*/
-		activePlayer.stopClock();//so time doesn't run as calculations happen
+			throws IllegalMoveException, PieceNeedsToBeReplacedException {
+		/* this is pretty terrible, could use some cleanup */
+		activePlayer.stopClock();// so time doesn't run as calculations happen
 		ChessPiece movingPiece = gameBoard.getChessPieceAtLoc(from);
 		ChessPiece potentialMovedPiece = gameBoard.getChessPieceAtLoc(to);
 		if (movingPiece != null) {
 			// no need to display, (get a response) if to wasn't a valid move
 			// location
+			// if its not the active players piece don't do anything
+			if (!movingPiece.getColor().equals(activePlayer.getColor())) {
+				return false;
+			}
 			try {
-				movingPiece.moveTo(from);
-				if (!activePlayer.endTurn()) {// illegal move was made
-					//activePlayer.startClock(); clock already moving if turn was not ended
-					throw revertMove(movingPiece,potentialMovedPiece,from,to);
+				movingPiece.moveTo(to);
+				if (!endActivePlayerTurn()) {// illegal move was made
+					// activePlayer.startClock(); clock already moving if turn
+					// was not ended
+					throw revertMove(movingPiece, potentialMovedPiece, from, to);
 				}
-			} catch (IllegalMoveException e) {//no move was made
+			} catch (IllegalMoveException e) {// no move was made
 				activePlayer.startClock();
 				throw e;
-			} catch (PieceNeedsToBeReplacedException e){//move was made, but more input required
-				if(!activePlayer.endTurn()){//if move made was illegal
-					//activePlayer.startClock(); clock already moving if turn not ended
-					throw revertMove(movingPiece,potentialMovedPiece,from,to);
+			} catch (PieceNeedsToBeReplacedException e) {// move was made, but
+															// more input
+															// required
+				if (!endActivePlayerTurn()) {// if move made was illegal
+					// activePlayer.startClock(); clock already moving if turn
+					// not ended
+					throw revertMove(movingPiece, potentialMovedPiece, from, to);
 				}
-				//turn was ended but more input required
+				// turn was ended but more input required
 				throw e;
 			}
-			//turn was ended successfully, a piece was moved and the player ended its turn
+			// turn was ended successfully, a piece was moved and the player
+			// ended its turn
 			return true;
 		}
-		//if moving piece was null, no move was made, so don't end turn or do anything
+		// if moving piece was null, no move was made, so don't end turn or do
+		// anything
 		return false;
 	}
 
 	private IllegalMoveException revertMove(ChessPiece movingPiece,
-			ChessPiece potentialMovedPiece, Location from, Location to) throws IllegalMoveException{
-		
-			// revert move
-			movingPiece.doMove(from);
-			if (potentialMovedPiece != null) {
-				potentialMovedPiece.putSelfInChessBoard(gameBoard, to);
-			}
-			// now throw exception, display this
-			IllegalMoveException e = new IllegalMoveException(
-					"Player cannot end turn, in check");
-			e.setDisplay(true);
-			return e;
+			ChessPiece potentialMovedPiece, Location from, Location to)
+			throws IllegalMoveException {
+
+		// revert move
+		movingPiece.doMove(from);
+		if (potentialMovedPiece != null) {
+			potentialMovedPiece.putSelfInChessBoard(gameBoard, to);
+		}
+		// now throw exception, display this
+		IllegalMoveException e = new IllegalMoveException(
+				"Player cannot end turn, in check");
+		e.setDisplay(true);
+		return e;
 	}
 
 	/**
@@ -123,7 +138,7 @@ public class ChessGame {
 			inactivePlayer = t;
 			return true;
 		}
-		throw new IllegalMoveException("Player cannot end turn in check");
+		return false;
 	}
 
 	/**
@@ -162,7 +177,55 @@ public class ChessGame {
 	public long getActivePlayerTimeLeft() {
 		return activePlayer.getTimeLeftInMilliSeconds();
 	}
-	public ChessBoard<ChessPiece> getChessBoard(){
+
+	public ChessBoard<ChessPiece> getChessBoard() {
 		return gameBoard;
 	}
+
+	/**
+	 * Use this to find if a piece is at a loc
+	 * 
+	 * @param loc
+	 *            location to check
+	 * @return true if a piece was at loc, false otherwise
+	 */
+	public boolean isPieceAtLoc(Location loc) {
+		if (gameBoard.getChessPieceAtLoc(loc) != null) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean endGame(Color winningColor) {
+		return false;
+	}
+
+	/**
+	 * Adds piece to board
+	 * 
+	 * @param loc
+	 *            the loc to place the piece
+	 * @param pieceNum
+	 *            the piece id (0=Queen,1=Rook,2=Bishop,3=Knight
+	 * @param pieceOwnerColor
+	 *            the color of the player whose piece it will become
+	 * @return
+	 */
+	public boolean addPieceAtLoc(Location loc, int pieceNum,
+			Color pieceOwnerColor) {
+		if (pieceNum == 0) {
+			new Queen(gameBoard, pieceOwnerColor, loc);
+		}
+		if (pieceNum == 1) {
+			new Rook(gameBoard, pieceOwnerColor, loc);
+		}
+		if (pieceNum == 2) {
+			new Bishop(gameBoard, pieceOwnerColor, loc);
+		}
+		if (pieceNum == 3) {
+			new Knight(gameBoard, pieceOwnerColor, loc);
+		}
+		return true;
+	}
+
 }

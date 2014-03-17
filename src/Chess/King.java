@@ -50,9 +50,26 @@ public class King extends ChessPiece {
 			if (curPiece.getColor() != super.getColor()) {
 				// if any other piece can move at potentialLoc then king would
 				// be in check
-				if(!(curPiece instanceof King)){//try to prevent infinite loop
+				if (!(curPiece instanceof King) && !(curPiece instanceof Pawn)) {// try
+																					// to
+																					// prevent
+																					// infinite
+																					// loop
 					if (curPiece.getValidMoveLocations().contains(potentialLoc)) {
 						return true;
+					}
+				} else {
+					if (curPiece instanceof Pawn) {
+						if (((Pawn) curPiece).getCaptureDirections().contains(
+								potentialLoc)) {
+							return true;
+						}
+					}
+					// don't move next to an opposing king
+					for (int i = 0; i < 360; i += 45) {
+						if (potentialLoc.equals(curLoc.getAdjacentLocation(i))) {
+							return true;
+						}
 					}
 				}
 			}
@@ -76,19 +93,20 @@ public class King extends ChessPiece {
 		if (super.hasMoved() || isInCheck()) {
 			return castleLocs;
 		}
-		
+
 		// check left then right
 		ArrayList<Object> locToAdd = checkCastleDirection(Location.WEST);
-		if(locToAdd.size() == 2){
-			castleLocs.add((Location)locToAdd.get(0));
+		if (locToAdd.size() == 2) {
+			castleLocs.add((Location) locToAdd.get(0));
 		}
 		locToAdd = checkCastleDirection(Location.EAST);
-		if(locToAdd.size() == 2){
-			castleLocs.add((Location)locToAdd.get(0));
+		if (locToAdd.size() == 2) {
+			castleLocs.add((Location) locToAdd.get(0));
 		}
 		return castleLocs;
 	}
-	//needs checking
+
+	// needs checking
 	private ArrayList<Object> checkCastleDirection(int direction) {
 		ArrayList<Object> returnPair = new ArrayList<Object>(2);
 		ChessBoard<ChessPiece> br = super.getChessBoard();
@@ -97,23 +115,27 @@ public class King extends ChessPiece {
 		while (br.isValid(curLoc)) {
 			ChessPiece curPiece = br.getChessPieceAtLoc(curLoc);
 			if (curPiece != null) {
-				//if you run into a rook you might be able to castle, else you can't
+				// if you run into a rook you might be able to castle, else you
+				// can't
 				if (curPiece instanceof Rook) {
-					//if rook hasn't moved
+					// if rook hasn't moved
 					if (!curPiece.hasMoved()) {
 						// now check the king is not castling through check
 						Location kingMoveThrough = super.getLocation()
-								.getAdjacentLocation(direction);    
-						Location kingFinalLocation = kingMoveThrough.getAdjacentLocation(direction);
-						//if not castling through or ending up in check
-						if(!wouldBeInCheck(kingMoveThrough) && !wouldBeInCheck(kingFinalLocation)){
+								.getAdjacentLocation(direction);
+						Location kingFinalLocation = kingMoveThrough
+								.getAdjacentLocation(direction);
+						// if not castling through or ending up in check
+						if (!wouldBeInCheck(kingMoveThrough)
+								&& !wouldBeInCheck(kingFinalLocation)) {
 							returnPair.add(kingFinalLocation);
 							returnPair.add(curPiece);
 							return returnPair;
 						}
 					}
 				}
-				break;//if there was a piece there either castling was possible or it isn't
+				break;// if there was a piece there either castling was possible
+						// or it isn't
 			}
 			curLoc = curLoc.getAdjacentLocation(direction);
 		}
@@ -132,19 +154,29 @@ public class King extends ChessPiece {
 		// move the king, then move the rook
 		int castleDir = super.getLocation().getDirectionToward(loc);
 		ArrayList<Object> locAndRook = checkCastleDirection(castleDir);
-		
-		if(!loc.equals((Location)locAndRook.get(0))){
+
+		if (!loc.equals((Location) locAndRook.get(0))) {
 			return false;
 		}
-		if(castleDir<180){
+		if (castleDir < 180) {
 			castleDir += 180;
-		}else{
+		} else {
 			castleDir -= 180;
 		}
-		((Rook)locAndRook.get(1)).doMove(loc.getAdjacentLocation(castleDir));
-		
+		((Rook) locAndRook.get(1)).doMove(loc.getAdjacentLocation(castleDir));
+
 		super.doMove(loc);
 		return true;
+	}
+	public ChessPiece moveTo(Location loc) throws IllegalMoveException, PieceNeedsToBeReplacedException{
+		if(getValidCastleLocations().contains(loc)){
+			castleTo(loc);
+			return null;
+		}
+		if(getValidMoveLocations().contains(loc)){
+			return super.moveTo(loc);
+		}
+		throw new IllegalMoveException("This is not a valid move location.");
 	}
 
 }
