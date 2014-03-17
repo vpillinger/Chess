@@ -219,7 +219,7 @@ public class GUIController<T>
         stepButton.setEnabled(false);
         stopButton.setEnabled(false);
         runButton.setText("Draw");
-        stepButton.setText("Surrender");
+        stepButton.setText("CheckMate");
         stopButton.setText("Reset Game");
         //reset game is not working
         stopButton.setVisible(false);

@@ -64,11 +64,13 @@ public class King extends ChessPiece {
 								potentialLoc)) {
 							return true;
 						}
-					}
-					// don't move next to an opposing king
-					for (int i = 0; i < 360; i += 45) {
-						if (potentialLoc.equals(curLoc.getAdjacentLocation(i))) {
-							return true;
+					} else {
+						// don't move next to an opposing king
+						for (int i = 0; i < 360; i += 45) {
+							if (potentialLoc.equals(curLoc
+									.getAdjacentLocation(i))) {
+								return true;
+							}
 						}
 					}
 				}
@@ -168,12 +170,14 @@ public class King extends ChessPiece {
 		super.doMove(loc);
 		return true;
 	}
-	public ChessPiece moveTo(Location loc) throws IllegalMoveException, PieceNeedsToBeReplacedException{
-		if(getValidCastleLocations().contains(loc)){
+
+	public ChessPiece moveTo(Location loc) throws IllegalMoveException,
+			PieceNeedsToBeReplacedException {
+		if (getValidCastleLocations().contains(loc)) {
 			castleTo(loc);
 			return null;
 		}
-		if(getValidMoveLocations().contains(loc)){
+		if (getValidMoveLocations().contains(loc)) {
 			return super.moveTo(loc);
 		}
 		throw new IllegalMoveException("This is not a valid move location.");

@@ -16,6 +16,9 @@ public class ChessWorld<E extends ChessPiece> extends World<E> {
 	private Location locOfPieceSelected;
 	private boolean isPieceSelected; 
 	private ArrayList<Location> highLightedSpaces;
+	private boolean waitingForUserKey;
+	private boolean debuggin;
+	private Location locToReplacePiece;
 	/**
 	 * Create a ChessWorld where the players have 30 minutes on their chess clocks
 	 * @return
@@ -31,14 +34,67 @@ public class ChessWorld<E extends ChessPiece> extends World<E> {
 		locOfPieceSelected = null;
 		isPieceSelected = false;
 		highLightedSpaces = new ArrayList<Location>();
+		waitingForUserKey = false;
+		locToReplacePiece = null;
 		
 		//set inital message to white players turn
 		displayTurnMessage(TURNSTATUS.NOSTATUS,false);
+		
+		//set if debug mode
+		debuggin = false;
 	}
+	  /**
+     * This method is called when a key was pressed. It consumes keys if Game needs key input, who knows when that is, this whole is magic Don't consume plain arrow keys,
+     * or the user loses the ability to move the selection square with the keyboard.   
+     * @param description the string describing the key, in 
+     * <a href="http://java.sun.com/javase/6/docs/api/javax/swing/KeyStroke.html#getKeyStroke(java.lang.String)">this format</a>. 
+     * @param loc the selected location in the grid at the time the key was pressed
+     * @return true if the world consumes the key press, false if the GUI should
+     * consume it.
+     */
+    public boolean keyPressed(String description, Location loc)
+    {
+    	if(waitingForUserKey){
+    		int i = Integer.MAX_VALUE;
+    		if(description.equals("0")){
+    			i = 0;
+    		}
+    		else if(description.equals("1")){
+    			i = 1;
+    		}else if(description.equals("2")){
+    			i = 2;
+    		}else if(description.equals("3")){
+    			i = 3;
+    		}else{
+    			System.out.println("FOLLOW INSTRUCTIONS!");
+    		}
+    		if(i < 4){
+    			System.out.println("FUCK THis");
+    			chessGame.addPieceAtLoc(locToReplacePiece, i, chessGame.getInactivePlayerColor());
+    			waitingForUserKey = false;
+    			locToReplacePiece = null;
+    			//super.step();
+    			return true;
+    		}else{
+    			return true;
+    		}
+    		
+    	}
+        return true;
+    }
+
 	/**
 	 * Returns true if the click is consumed by this method
 	 */
 	public boolean locationClicked(Location loc){
+		if(debuggin){
+			return false;
+		}
+		if(waitingForUserKey){
+			setMessage("Please select a Piece. \n Press 0 for Queen \n Press 1 for Rook \n Press 2 for Bishop"
+					+ "\n Press 3 for Knight");
+			return true;
+		}
 		//if piece is selected see if you can move it
 		if(isPieceSelected){
 			try {
@@ -54,12 +110,15 @@ public class ChessWorld<E extends ChessPiece> extends World<E> {
 				}
 				unselectPiece();
 			} catch (PieceNeedsToBeReplacedException e) {
-				//prompt user input to get new piece and add it to the board
-				/*Needs Implementation*/
-				int pieceNum = 0;
-				chessGame.addPieceAtLoc(loc, pieceNum, chessGame.getInactivePlayerColor());
-				TURNSTATUS u = chessGame.startActivePlayerTurn();
-				displayTurnMessage(u,false);
+				//prompt user input to get new piece
+				setMessage("Press 0 for Queen \n Press 1 for Rook \n Press 2 for Bishop"
+						+ "\n Press 3 for Knight");
+				locToReplacePiece = loc;
+				waitingForUserKey = true;
+				/*Let keyPressed method handle making it and finishing the turn*/
+				//chessGame.addPieceAtLoc(loc, pieceNum, chessGame.getInactivePlayerColor());
+				//TURNSTATUS u = chessGame.startActivePlayerTurn();
+				//displayTurnMessage(u,false);
 			}
 			unselectPiece();
 			return true;

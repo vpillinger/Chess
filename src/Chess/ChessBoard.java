@@ -69,9 +69,9 @@ public class ChessBoard<E extends ChessPiece> extends BoundedGrid<E> {
 		new Bishop(self, sideColor, new Location(7, 2));
 		new Bishop(self, sideColor, new Location(7, 5));
 		// set up queen
-		new Queen(self, sideColor, new Location(7, 4));
+		new Queen(self, sideColor, new Location(7, 3));
 		// set up king
-		new King(self, sideColor, new Location(7, 3));
+		new King(self, sideColor, new Location(7, 4));
 	}
 
 	private ChessBoard(int rows, int cols) {
