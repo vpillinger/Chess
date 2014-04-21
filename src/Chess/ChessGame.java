@@ -6,9 +6,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class ChessGame {
-	private ChessPlayer inactivePlayer; // the player who is waiting for their
+	public ChessPlayer inactivePlayer; // the player who is waiting for their
 										// turn
-	private ChessPlayer activePlayer; // the player whose turn it is
+	public ChessPlayer activePlayer; // the player whose turn it is
 	private ChessBoard<ChessPiece> gameBoard;
 
 	/**
@@ -158,6 +158,12 @@ public class ChessGame {
 	public void stopActivePlayerClock() {
 		activePlayer.stopClock();
 	}
+	public ChessClock getPlayerChessClockByColor(Color player){
+		if(activePlayer.getColor().equals(player)){
+			return activePlayer.getChessClock();
+		}
+		return inactivePlayer.getChessClock();
+	}
 
 	/**
 	 * Starts the Active players clock
@@ -227,5 +233,8 @@ public class ChessGame {
 		}
 		return true;
 	}
-
+	public void endGame(){
+		activePlayer.stopClock();
+		inactivePlayer.stopClock();
+	}
 }

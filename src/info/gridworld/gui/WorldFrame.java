@@ -47,6 +47,7 @@ import java.util.TreeSet;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -195,6 +196,8 @@ public class WorldFrame<T> extends JFrame
         content.add(new JScrollPane(messageArea), BorderLayout.NORTH);
 
         pack();
+        ArrayList<JButton> timers = control.getTimerButtons();
+        world.setTimers(timers);
         repaint(); // to show message
         display.setGrid(gr);
     }

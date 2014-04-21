@@ -1,11 +1,15 @@
 package Chess;
 
+import info.gridworld.world.ChessWorld;
+
 import java.awt.Color;
+import java.util.ArrayList;
 
 public class ChessPlayer{
 	private ChessClock clock;
 	private King king;
 	private Color color;
+	private ArrayList<ChessWorld<? extends ChessPiece>> observers;
 	
 	public ChessPlayer(Color color, King king, long clockTime){
 		if(king.getColor() != color){
@@ -14,6 +18,8 @@ public class ChessPlayer{
 		this.color = color;
 		this.king = king;
 		this.clock = new ChessClock(clockTime);
+		clock.addObserver(this);
+		observers = new ArrayList<ChessWorld<? extends ChessPiece>>();
 	}
 	/**
 	 * 
@@ -97,6 +103,17 @@ public class ChessPlayer{
 		clock.start();
 	}
 	public void stopClock(){
-		clock.stop();
+		clock = clock.stop();
+	}
+	public void updateClock(long timeLeft) {
+		for(ChessWorld<? extends ChessPiece> o:observers){
+			o.updateClock(timeLeft, color);
+		}
+	}
+	public void addObserver(ChessWorld<? extends ChessPiece> o){
+		observers.add(o);
+	}
+	public void removeObserver(ChessWorld<? extends ChessPiece> o){
+		observers.remove(o);
 	}
 }

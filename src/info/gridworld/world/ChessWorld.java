@@ -3,6 +3,9 @@ package info.gridworld.world;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 import Chess.ChessGame;
 import Chess.ChessPiece;
 import Chess.IllegalMoveException;
@@ -19,6 +22,7 @@ public class ChessWorld<E extends ChessPiece> extends World<E> {
 	private boolean waitingForUserKey;
 	private boolean debuggin;
 	private Location locToReplacePiece;
+	private JButton whiteTimer, blackTimer;
 	/**
 	 * Create a ChessWorld where the players have 30 minutes on their chess clocks
 	 * @return
@@ -36,7 +40,9 @@ public class ChessWorld<E extends ChessPiece> extends World<E> {
 		highLightedSpaces = new ArrayList<Location>();
 		waitingForUserKey = false;
 		locToReplacePiece = null;
-		
+		//this is pretty bad, I made the players public for this
+		chessGame.activePlayer.addObserver(this);
+		chessGame.inactivePlayer.addObserver(this);
 		//set inital message to white players turn
 		displayTurnMessage(TURNSTATUS.NOSTATUS,false);
 		
@@ -69,7 +75,6 @@ public class ChessWorld<E extends ChessPiece> extends World<E> {
     			System.out.println("FOLLOW INSTRUCTIONS!");
     		}
     		if(i < 4){
-    			System.out.println("FUCK THis");
     			chessGame.addPieceAtLoc(locToReplacePiece, i, chessGame.getInactivePlayerColor());
     			waitingForUserKey = false;
     			locToReplacePiece = null;
@@ -152,7 +157,7 @@ public class ChessWorld<E extends ChessPiece> extends World<E> {
 		isPieceSelected = false;
 	}
 	/**
-	 * Overwrite to prompt user to surrender or offer draw
+	 * Overwrite to prompt user to surrender
 	 */
 	public void step(){
 		String color = "White";
@@ -161,6 +166,7 @@ public class ChessWorld<E extends ChessPiece> extends World<E> {
 		}
 		setMessage("Player " + color + " has lost by CHECKMATE");
 	}
+	//restart game
 	public void stop(){
 		ChessGame chessGame = new ChessGame(1800000);//30 minute chess timer
 		Grid<ChessPiece> chessGrid = chessGame.getChessBoard();
@@ -181,5 +187,36 @@ public class ChessWorld<E extends ChessPiece> extends World<E> {
 			return false;
 		}
 		return true;
+	}
+	public void updateClock(long timeLeft, Color color) {		
+		if(color.equals(Color.WHITE)){
+			whiteTimer.setText(convertMilliToDisplay(timeLeft));
+		}
+		else{
+			blackTimer.setText(convertMilliToDisplay(timeLeft));
+		}
+		//if time runs out end game for that player
+		if(timeLeft <= 0){
+			chessGame.endGame();
+			String colo = "White";
+			if(color.equals(Color.BLACK)){
+				colo = "Black";
+			}
+			setMessage("Player " + colo + " has lost by TIMEOUT");
+			JOptionPane.showMessageDialog(super.getFrame(), "Player " + colo + " has lost by TIMEOUT");
+		}
+	}
+	public void setTimers(ArrayList<JButton> timers) {
+		whiteTimer = timers.get(0);
+		blackTimer = timers.get(1);
+		whiteTimer.setText(convertMilliToDisplay(chessGame.getActivePlayerTimeLeft()));
+		blackTimer.setText(convertMilliToDisplay(chessGame.getActivePlayerTimeLeft()));
+	}
+	private String convertMilliToDisplay(long milli){
+		long mins, secs;
+		secs = milli/1000;
+		mins = secs/60;
+		secs = secs - mins*60;
+		return (mins + ":" + secs);
 	}
 }

@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class GUIController<T>
             + (MAX_DELAY_MSECS - MIN_DELAY_MSECS) / 2;
 
     private Timer timer;
-    private JButton stepButton, runButton, stopButton;
+    private JButton stepButton, runButton, stopButton, whiteTimer, blackTimer;
     private JComponent controlPanel;
     private GridPanel display;
     private WorldFrame<T> parentFrame;
@@ -224,6 +225,22 @@ public class GUIController<T>
         //reset game is not working
         stopButton.setVisible(false);
         controlPanel.add(Box.createRigidArea(spacer));
+        //timer labels
+       
+        JLabel whiteTimerLabel = new JLabel("White Time:");
+        JLabel blackTimerLabel = new JLabel("Black Time:");
+        whiteTimer = new JButton();
+        blackTimer = new JButton();
+        whiteTimer.setEnabled(false);
+        blackTimer.setEnabled(false);
+        
+        controlPanel.add(whiteTimerLabel);
+        controlPanel.add(whiteTimer);
+        controlPanel.add(Box.createRigidArea(spacer));
+        
+        controlPanel.add(blackTimerLabel);
+        controlPanel.add(blackTimer);
+        controlPanel.add(Box.createRigidArea(spacer));
         //controlPanel.add(new JLabel(resources.getString("slider.gui.slow")));
         /*comment out the slider
         JSlider speedSlider = new JSlider(MIN_DELAY_MSECS, MAX_DELAY_MSECS,
@@ -344,5 +361,11 @@ public class GUIController<T>
             world.remove(loc);
             parentFrame.repaint();
         }
+    }
+    public ArrayList<JButton> getTimerButtons(){
+    	ArrayList<JButton> t = new ArrayList<JButton>(2);
+    	t.add(whiteTimer);
+    	t.add(blackTimer);
+    	return t;
     }
 }

@@ -21,11 +21,13 @@ import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 import info.gridworld.gui.WorldFrame;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 /**
@@ -319,5 +321,14 @@ public class World<T>
 
 	public void draw() {
 		//do nothing because screw it, who needs abstraction and good design anyway		
+	}
+
+	public void setTimers(ArrayList<JButton> timers) {
+		//throw away
+	}
+
+	public Component getFrame() {
+		// TODO Auto-generated method stub
+		return frame;
 	}
 }
