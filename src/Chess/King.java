@@ -25,6 +25,45 @@ public class King extends ChessPiece {
 				moveLocs.add(adjLoc);
 			}
 		}
+		
+		if (isInCheck()) {
+			moveLocs = super.checkLocations(moveLocs);
+		}
+		
+		//Remove king
+		/*
+		Location curr = super.getLocation();
+		Color c = super.getColor();
+		
+		ArrayList<Location> dumbLocs = new ArrayList<Location>(8);
+		
+		for (Location testing : moveLocs) {
+			ChessBoard<ChessPiece> b = super.getChessBoard();
+			if (b.isChessPieceAtLoc(testing) && b.getChessPieceColorAtLoc(testing) != c){
+				ChessPiece derp = b.getChessPieceAtLoc(testing);
+				derp.removeSelfFromChessBoard();
+				super.removeSelfFromChessBoard();
+				super.putSelfInChessBoard(b, testing);
+				if (!wouldBeInCheck(testing)) {
+					dumbLocs.add(testing);
+					//moveLocs.remove(testing);
+				}
+				super.removeSelfFromChessBoard();
+				super.putSelfInChessBoard(b, curr);
+				derp.putSelfInChessBoard(b, testing);
+			} else {
+				super.removeSelfFromChessBoard();
+				super.putSelfInChessBoard(b, testing);
+				if (!wouldBeInCheck(testing)) {
+					dumbLocs.add(testing);
+					//moveLocs.remove(testing);
+				}
+				super.removeSelfFromChessBoard();
+				super.putSelfInChessBoard(b, curr);
+			}
+		}
+		*/
+		
 		// don't forget castle locations
 		moveLocs.addAll(getValidCastleLocations());
 		return moveLocs;

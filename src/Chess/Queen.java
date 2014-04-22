@@ -2,11 +2,12 @@
  package Chess;
  
  import info.gridworld.grid.Location;
- 
+
  import java.awt.Color;
- import java.util.ArrayList;
+import java.util.ArrayList;
  
  public class Queen extends ChessPiece {
+	
  	public Queen(ChessBoard<ChessPiece> board, Color color, Location loc){
  		super.setColor(color);
  		super.setHasMoved(false);
@@ -25,6 +26,25 @@
  		validLocs.addAll(checkValidLocInDirection(Location.SOUTHEAST));
  		validLocs.addAll(checkValidLocInDirection(Location.NORTHWEST));
  		validLocs.addAll(checkValidLocInDirection(Location.SOUTHWEST));
+ 		
+ 		if(super.isThisBad()){
+	 		//Check Mate Purposes....
+			Color c = super.getColor();
+			King k;
+			//if you are in check
+			
+			ChessBoard<ChessPiece> b = super.getChessBoard();
+			ArrayList<King> kings = b.getKingsOnChessBoard();
+			if (kings.get(0).getColor() == c) {
+				k = kings.get(0);
+			}
+			else {
+				k = kings.get(1);
+			}
+			if (k.isInCheck()){
+				validLocs = super.checkLocations(validLocs);
+			}
+ 		}
  		return validLocs;
  	}
  
