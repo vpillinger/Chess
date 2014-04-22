@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import info.gridworld.grid.Location;
 
 public abstract class ChessPiece extends Piece{
-
+	public abstract boolean hasMoved();
 	/**
 	 *Flips the piece to face the opposite direction
 	 */

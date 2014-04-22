@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 import info.gridworld.grid.Location;
 
-public class ChessBoard<E extends Piece> extends Board<E> {
+public class ChessBoard<E extends ChessPiece> extends Board<E> {
 	/**
 	 * Makes a chess board. 
  	 * The board will contain appropriate black and white tiles
 	 * @return an initialized chess board
 	 */
-	public static ChessBoard<Piece> makeEmptyChessBoard(){
+	public static ChessBoard<ChessPiece> makeEmptyChessBoard(){
 		return null;
 	}
 	/**
@@ -20,9 +20,8 @@ public class ChessBoard<E extends Piece> extends Board<E> {
 	 * The board will contain appropriate black and white tiles
 	 * @return an initialized chess board will all pieces
 	 */
-	public static ChessBoard<Piece> makeFullChessBoard(){
+	public static ChessBoard<ChessPiece> makeFullChessBoard(){
 		return null;
-		
 	}
 	
 	private ChessBoard(int rows, int cols) {
@@ -30,11 +29,12 @@ public class ChessBoard<E extends Piece> extends Board<E> {
 		// TODO Auto-generated constructor stub
 	}
 	/**
-	 * Returns that locations of all locations not occupied by tiles
-	 * @ return an ArrayList of locations
+	 * Returns an array of possible move locations for a piece at a location
+	 * @param loc the Location to check
+	 * @return null if no piece is there, 
+	 * an arrayList of possible move Locations if a piece is there
 	 */
-	public ArrayList<Location> getNonTileOccupiedLocations(){
+	public ArrayList<Location> getMoveLocationsforLoc(Location loc){
 		return null;
-		
 	}
 }
