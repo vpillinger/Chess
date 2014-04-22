@@ -41,28 +41,8 @@ public class Knight extends ChessPiece {
 		locToCheck = new Location(myLoc.getRow()-1,myLoc.getCol()-2);
 		toReturn.addAll(checkLoc(locToCheck));
 		
-		if(super.isThisBad()){
-	 		//Check Mate Purposes....
-			Color c = super.getColor();
-			King k;
-			//if you are in check
-			
-			ChessBoard<ChessPiece> b = super.getChessBoard();
-			ArrayList<King> kings = b.getKingsOnChessBoard();
-			if (kings.get(0).getColor() == c) {
-				k = kings.get(0);
-			}
-			else {
-				k = kings.get(1);
-			}
-			if (k.isInCheck()){
-				toReturn = super.checkLocations(toReturn);
-			}
- 		}
-		
 		return toReturn;
 	}
-	
 	private ArrayList<Location> checkLoc(Location loc){
 		ArrayList<Location> toReturn = new ArrayList<Location>(1);
 		if(!super.getChessBoard().isValid(loc)){
